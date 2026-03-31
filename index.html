@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+<html lang="zh-HK">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Mercedes-Benz | Timeless Experience</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Noto+Sans+TC:wght@300;400;500&family=Noto+Serif+TC:wght@400;600;700&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        warm: {
+                            bg: '#F9F6F0',       
+                            card: '#FFFFFF',     
+                            border: '#EAE0D5',   
+                            text: '#4A3F35',     
+                            muted: '#8C7A6B',    
+                            accent: '#C29363',   
+                            accentHover: '#A87B4E'
+                        }
+                    },
+                    fontFamily: {
+                        serif: ['"Playfair Display"', '"Noto Serif TC"', 'serif'],
+                        sans: ['"Inter"', '"Noto Sans TC"', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body { font-family: 'Inter', 'Noto Sans TC', sans-serif; color: #4A3F35; background-color: #F9F6F0; overflow: hidden; touch-action: manipulation; }
+        h1, h2, h3, .font-serif { font-family: 'Playfair Display', 'Noto Serif TC', serif; letter-spacing: 0.03em; }
+        
+        .step { display: none; opacity: 0; transition: opacity 0.4s ease-in-out; }
+        .step.active { display: flex; opacity: 1; }
+
+        .kiosk-card {
+            background: #FFFFFF;
+            border: 1px solid #EAE0D5;
+            transition: all 0.2s ease;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.02);
+        }
+        .kiosk-card:active { transform: scale(0.98); }
+        .kiosk-card.selected {
+            border-color: #C29363;
+            background-color: #FDFBF8;
+            transform: scale(1.02);
+            box-shadow: 0 10px 25px rgba(194, 147, 99, 0.15);
+        }
+        .kiosk-card.selected .icon-color { color: #C29363; }
+        .icon-color { color: #8C7A6B; transition: color 0.2s; }
+
+        .btn-primary {
+            background: #4A3F35;
+            color: #FFFFFF;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(74, 63, 53, 0.2);
+        }
+        .btn-primary:active { transform: scale(0.98); background: #3A2E26; }
+        
+        .btn-secondary {
+            background: transparent;
+            color: #4A3F35;
+            border: 1px solid #4A3F35;
+            transition: all 0.3s ease;
+        }
+        .btn-secondary:active { transform: scale(0.98); background: rgba(74, 63, 53, 0.05); }
+
+        .bg-texture {
+            background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23c29363' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+        }
+
+        @keyframes count-pop {
+            0% { transform: scale(0.5); opacity: 0; }
+            40% { transform: scale(1.2); opacity: 1; }
+            80% { transform: scale(1); opacity: 1; }
+            100% { transform: scale(1.1); opacity: 0; }
+        }
+        .animate-count { animation: count-pop 1s ease-in-out; }
+    </style>
+</head>
+<body class="h-screen w-screen antialiased flex flex-col relative select-none bg-texture">
+
+    <!-- Global Header -->
+    <header class="absolute top-0 left-0 w-full p-8 flex justify-between items-center z-50 pointer-events-none">
+        <h1 class="text-2xl font-serif tracking-[0.05em] text-warm-text">Mercedes-Benz</h1>
+        <p id="step-indicator" class="text-xs font-sans tracking-[0.2em] uppercase text-warm-muted">Welcome</p>
+    </header>
+
+    <!-- ================= STEP 1: WELCOME ================= -->
+    <div id="step-1" class="step active flex-col items-center justify-center h-full w-full relative bg-warm-bg">
+        <div class="absolute inset-0 bg-gradient-to-b from-warm-bg via-[#F4EFE6] to-[#EAE0D5] opacity-50"></div>
+        <div class="relative z-10 flex flex-col items-center text-center px-6">
+            <div class="w-20 h-20 rounded-full border border-warm-accent flex items-center justify-center mb-8">
+                <i class="fas fa-camera-retro text-3xl text-warm-accent"></i>
+            </div>
+            <h2 class="text-6xl font-serif mb-6 text-warm-text tracking-wide leading-tight">Timeless<br>Experience</h2>
+            <p class="text-sm font-sans tracking-[0.3em] uppercase text-warm-muted mb-16">Discover your legacy</p>
+            
+            <button onclick="goToStep(2)" class="btn-primary px-16 py-5 text-sm tracking-[0.2em] uppercase font-bold flex items-center justify-center gap-4 rounded-full animate-pulse">
+                Tap to Start <i class="fas fa-chevron-right"></i>
+            </button>
+        </div>
+    </div>
+
+    <!-- ================= STEP 2: VEHICLE SELECTION ================= -->
+    <div id="step-2" class="step flex-col items-center justify-center h-full w-full px-12 bg-warm-bg relative z-10">
+        <div class="w-full text-center mb-12">
+            <p class="text-xs tracking-[0.2em] uppercase text-warm-muted mb-2">Step 01</p>
+            <h2 class="text-4xl font-serif text-warm-text">Select Your Era</h2>
+        </div>
+
+        <div class="flex flex-row justify-center gap-8 w-full max-w-4xl">
+            <div onclick="selectCar('sclass', this)" class="kiosk-card car-card cursor-pointer flex-1 flex flex-col items-center justify-center gap-6 rounded-3xl h-80">
+                <i class="fas fa-car-side text-6xl icon-color"></i>
+                <div class="text-center">
+                    <h3 class="text-2xl font-serif mb-2 text-warm-text">New S-Class</h3>
+                    <p class="text-xs font-sans tracking-widest uppercase text-warm-muted">Modern Luxury</p>
+                </div>
+            </div>
+            <div onclick="selectCar('1886', this)" class="kiosk-card car-card cursor-pointer flex-1 flex flex-col items-center justify-center gap-6 rounded-3xl h-80">
+                <i class="fas fa-history text-6xl icon-color"></i>
+                <div class="text-center">
+                    <h3 class="text-2xl font-serif mb-2 text-warm-text">1886 First Car</h3>
+                    <p class="text-xs font-sans tracking-widest uppercase text-warm-muted">Classic Heritage</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="absolute bottom-8 left-8">
+            <button onclick="goToStep(1)" class="btn-secondary px-8 py-4 text-xs tracking-widest uppercase rounded-full"><i class="fas fa-arrow-left mr-2"></i> Back</button>
+        </div>
+    </div>
+
+    <!-- ================= STEP 3: ATTIRE SELECTION ================= -->
+    <div id="step-3" class="step flex-col items-center justify-center h-full w-full px-12 bg-warm-bg relative z-10">
+        <div class="w-full text-center mb-12">
+            <p class="text-xs tracking-[0.2em] uppercase text-warm-muted mb-2">Step 02</p>
+            <h2 class="text-4xl font-serif text-warm-text">Select Your Attire</h2>
+        </div>
+
+        <div class="flex flex-row justify-center gap-8 w-full max-w-4xl">
+            <div onclick="selectGender('male', this)" class="kiosk-card gender-card cursor-pointer flex-1 flex flex-col items-center justify-center gap-6 rounded-3xl h-80">
+                <i class="fas fa-user-tie text-6xl icon-color"></i>
+                <div class="text-center px-4">
+                    <h3 class="text-2xl font-serif mb-2 text-warm-text">Gentleman</h3>
+                    <p class="text-xs font-sans tracking-widest uppercase text-warm-muted">Bespoke Suit</p>
+                </div>
+            </div>
+            <div onclick="selectGender('female', this)" class="kiosk-card gender-card cursor-pointer flex-1 flex flex-col items-center justify-center gap-6 rounded-3xl h-80">
+                <i class="fas fa-chess-queen text-6xl icon-color"></i>
+                <div class="text-center px-4">
+                    <h3 class="text-2xl font-serif mb-2 text-warm-text">Lady</h3>
+                    <p class="text-xs font-sans tracking-widest uppercase text-warm-muted">Haute Couture</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="absolute bottom-8 left-8">
+            <button onclick="goToStep(2)" class="btn-secondary px-8 py-4 text-xs tracking-widest uppercase rounded-full"><i class="fas fa-arrow-left mr-2"></i> Back</button>
+        </div>
+    </div>
+
+    <!-- ================= STEP 4: CAMERA & ALIGNMENT ================= -->
+    <div id="step-4" class="step flex-col h-full w-full bg-warm-bg relative pt-24">
+        <div id="countdown-overlay" class="absolute inset-0 bg-black/40 backdrop-blur-sm z-30 flex items-center justify-center hidden">
+            <span id="countdown-text" class="text-white text-[15rem] font-serif drop-shadow-2xl opacity-0">5</span>
+        </div>
+        
+        <div id="flash-overlay" class="absolute inset-0 bg-white opacity-0 z-40 hidden transition-opacity duration-150"></div>
+
+        <div class="flex-1 relative bg-[#EAE0D5] flex items-center justify-center overflow-hidden rounded-t-[40px] mx-8 shadow-inner border border-warm-border py-6">
+            <div class="relative h-full aspect-[3/4] bg-black shadow-2xl border-4 border-white rounded-xl overflow-hidden">
+                <video id="webcam" autoplay playsinline class="hidden"></video>
+                <canvas id="photo-canvas" class="w-full h-full object-cover"></canvas>
+                <div class="absolute top-[50%] left-[50%] -translate-x-1/2 -translate-y-1/2 pointer-events-none flex flex-col items-center w-[55%] aspect-square">
+                    <div class="w-full h-full border-[3px] border-warm-accent border-dashed rounded-full flex flex-col items-center justify-end pb-6 relative shadow-[0_0_0_9999px_rgba(0,0,0,0.6)]">
+                        <span class="text-white text-xs tracking-widest uppercase bg-warm-accent px-4 py-2 rounded-full absolute -bottom-4 shadow-lg whitespace-nowrap font-bold">Align Face Here</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="h-32 bg-warm-bg flex items-center justify-between px-12 relative shrink-0 border-t border-warm-border/50">
+            <button onclick="stopCameraAndGoToStep(3)" class="btn-secondary px-8 py-4 rounded-full flex items-center justify-center text-xs tracking-widest uppercase z-10"><i class="fas fa-arrow-left mr-2"></i> Back</button>
+            <button id="capture-btn" onclick="startCaptureCountdown()" class="absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-warm-accent text-white w-24 h-24 rounded-full flex items-center justify-center shadow-[0_0_30px_rgba(194,147,99,0.4)] z-20 active:scale-95 transition-transform border-[6px] border-white">
+                <i class="fas fa-camera text-3xl"></i>
+            </button>
+            <div class="w-32 h-12"></div> 
+        </div>
+    </div>
+
+    <!-- ================= STEP 5: REVIEW CAPTURE ================= -->
+    <div id="step-5" class="step flex-col h-full w-full bg-warm-bg relative pt-24">
+        <div class="flex-1 relative bg-[#EAE0D5] flex items-center justify-center overflow-hidden rounded-t-[40px] mx-8 shadow-inner border border-warm-border py-6">
+            <div class="relative h-full aspect-[3/4] bg-black shadow-2xl border-4 border-white rounded-xl overflow-hidden">
+                <img id="review-img" class="w-full h-full object-cover" src="" alt="Captured Frame">
+            </div>
+        </div>
+        <div class="h-32 bg-warm-bg flex items-center justify-center px-12 gap-8 relative shrink-0 border-t border-warm-border/50">
+            <button onclick="retakePhoto()" class="btn-secondary px-10 py-5 rounded-full flex items-center justify-center text-sm tracking-widest uppercase font-semibold"><i class="fas fa-redo mr-3"></i> Retake</button>
+            <button onclick="confirmCapture()" class="btn-primary px-10 py-5 rounded-full flex items-center justify-center text-sm tracking-widest uppercase font-bold shadow-lg"><i class="fas fa-check mr-3"></i> Confirm</button>
+        </div>
+    </div>
+
+    <!-- ================= STEP 6: LOADING ================= -->
+    <div id="step-6" class="step flex-col items-center justify-center h-full w-full relative bg-warm-bg z-20">
+        <div class="relative w-28 h-28 mb-10">
+            <div class="absolute inset-0 border-2 border-warm-border rounded-full"></div>
+            <div class="absolute inset-0 border-4 border-warm-accent rounded-full border-t-transparent animate-spin"></div>
+            <i class="fas fa-magic absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-warm-accent text-3xl animate-pulse"></i>
+        </div>
+        <h2 class="text-4xl font-serif text-warm-text mb-4 tracking-wide" id="loading-text">Crafting Legacy...</h2>
+        <p class="text-warm-muted text-xs font-sans tracking-[0.2em] uppercase text-center px-4">Synthesizing heritage.<br>Please wait.</p>
+    </div>
+
+    <!-- ================= STEP 7: RESULT (優化後的佈局 - 無捲軸) ================= -->
+    <div id="step-7" class="step flex-row items-center justify-center h-full w-full px-12 pt-20 pb-10 bg-warm-bg z-20 gap-8">
+        
+        <!-- 左側：成品 -->
+        <div class="flex-1 h-full flex items-center justify-center">
+            <div class="h-full max-h-[75vh] aspect-[3/4] bg-white p-4 pb-12 border border-warm-border shadow-xl relative rounded-sm flex items-center justify-center shrink-0">
+                <img id="ai-result-img" class="w-full h-full object-cover bg-[#EAE0D5]" src="" alt="Generated Experience">
+                <p class="absolute bottom-4 text-sm font-serif tracking-widest text-warm-muted" id="result-caption">Mercedes-Benz 1886</p>
+            </div>
+        </div>
+
+        <!-- 右側：資訊區 (已優化以防止捲動) -->
+        <div class="w-[400px] bg-white px-8 py-8 border border-warm-border shadow-xl rounded-2xl flex flex-col items-center text-center h-full max-h-[75vh] justify-between">
+            <div>
+                <h3 class="text-2xl font-serif text-warm-text mb-1">Your Portrait</h3>
+                <p class="text-[10px] tracking-[0.2em] uppercase text-warm-muted mb-4">Ready to save</p>
+            </div>
+
+            <!-- QR Code Area (確保不被壓扁) -->
+            <div class="flex flex-col items-center">
+                <div class="p-3 border border-warm-border rounded-xl mb-3 bg-white shadow-inner flex items-center justify-center aspect-square w-40 max-w-full">
+                    <img src="https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=https://www.mercedes-benz.com/&color=4A3F35&bgcolor=FFFFFF" alt="QR Code" class="w-full h-full object-contain">
+                </div>
+                <p class="text-[11px] text-warm-text font-medium">請掃描二維碼下載照片</p>
+            </div>
+
+            <div class="w-full h-px bg-warm-border/50"></div>
+
+            <!-- Gallery 提示區 -->
+            <div class="flex flex-col items-center">
+                <div class="w-10 h-10 bg-warm-bg rounded-full flex items-center justify-center mb-2">
+                    <i class="fas fa-image text-lg text-warm-accent"></i>
+                </div>
+                <p class="text-xs font-medium text-warm-text leading-relaxed">
+                    您的專屬照片將投影至<br>
+                    <span class="font-serif font-bold text-base text-warm-accent">Gallery</span> 畫框中，請移步前往觀賞。
+                </p>
+            </div>
+
+            <button onclick="resetBooth()" class="btn-primary w-full py-4 text-xs tracking-widest uppercase rounded-full font-bold shadow-md shrink-0 mt-4">
+                <i class="fas fa-redo mr-2"></i> Finish & Start Over
+            </button>
+        </div>
+    </div>
+
+    <script>
+        let currentStep = 1;
+        let selectedCar = null;
+        let selectedGender = null;
+        
+        const video = document.getElementById('webcam');
+        const canvas = document.getElementById('photo-canvas');
+        const ctx = canvas.getContext('2d');
+        
+        let bgImage = new Image();
+        bgImage.crossOrigin = "Anonymous";
+        let isCameraOn = false;
+        let isBgLoaded = false;
+        let animationId;
+        let finalAIImageUrl = '';
+
+        const params = { x: 50, y: 50, scale: 45, rot: 0 };
+
+        function init() {
+            canvas.width = 1080; 
+            canvas.height = 1440;
+        }
+
+        function goToStep(step) {
+            document.querySelectorAll('.step').forEach(el => el.classList.remove('active'));
+            setTimeout(() => {
+                document.getElementById(`step-${step}`).classList.add('active');
+            }, 50);
+            currentStep = step;
+            const indicator = document.getElementById('step-indicator');
+            const stepNames = ['', 'Welcome', 'Era Select', 'Attire Select', 'Align Face', 'Review', 'Processing', 'Legacy Archive'];
+            indicator.innerText = stepNames[step] || '';
+        }
+
+        function resetBooth() {
+            selectedCar = null;
+            selectedGender = null;
+            document.querySelectorAll('.kiosk-card').forEach(el => el.classList.remove('selected'));
+            document.getElementById('capture-btn').classList.remove('hidden'); 
+            if (isCameraOn) {
+                const stream = video.srcObject;
+                if (stream) stream.getTracks().forEach(track => track.stop());
+                isCameraOn = false;
+                if (animationId) cancelAnimationFrame(animationId);
+            }
+            goToStep(1);
+        }
+
+        function selectCar(type, element) {
+            selectedCar = type;
+            document.querySelectorAll('.car-card').forEach(el => el.classList.remove('selected'));
+            element.classList.add('selected');
+            isBgLoaded = true; 
+            if (type === '1886') {
+                document.getElementById('result-caption').innerText = "Mercedes-Benz 1886";
+                bgImage.src = "https://upload.wikimedia.org/wikipedia/commons/thumb/1/1b/Benz-velo.jpg/1280px-Benz-velo.jpg";
+            } else {
+                document.getElementById('result-caption').innerText = "Mercedes-Benz S-Class";
+                bgImage.src = "https://upload.wikimedia.org/wikipedia/commons/thumb/3/30/Mercedes-Benz_W223_IMG_6663.jpg/1280px-Mercedes-Benz_W223_IMG_6663.jpg";
+            }
+            bgImage.onload = () => { isBgLoaded = true; };
+            setTimeout(() => { goToStep(3); }, 300);
+        }
+
+        function selectGender(gender, element) {
+            selectedGender = gender;
+            document.querySelectorAll('.gender-card').forEach(el => el.classList.remove('selected'));
+            element.classList.add('selected');
+            setTimeout(() => { prepareCameraAndGoToStep4(); }, 300);
+        }
+
+        async function prepareCameraAndGoToStep4() {
+            goToStep(4);
+            if (!isCameraOn) {
+                try {
+                    const stream = await navigator.mediaDevices.getUserMedia({ 
+                        video: { facingMode: "user", width: { ideal: 1920 }, height: { ideal: 1080 } } 
+                    });
+                    video.srcObject = stream;
+                    isCameraOn = true;
+                    video.onloadedmetadata = () => { video.play(); startDrawingLoop(); };
+                } catch (err) {
+                    alert("相機開啟失敗，請檢查設備或瀏覽器權限。");
+                }
+            }
+        }
+
+        function stopCameraAndGoToStep(step) {
+            if (isCameraOn) {
+                const stream = video.srcObject;
+                if (stream) stream.getTracks().forEach(track => track.stop());
+                isCameraOn = false;
+                if (animationId) cancelAnimationFrame(animationId);
+            }
+            goToStep(step);
+        }
+
+        function startDrawingLoop() {
+            if (animationId) cancelAnimationFrame(animationId);
+            function loop() {
+                drawFrame();
+                if (isCameraOn) animationId = requestAnimationFrame(loop);
+            }
+            loop();
+        }
+
+        function drawFrame() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            if (isBgLoaded && bgImage.width > 0) {
+                const imgRatio = bgImage.width / bgImage.height;
+                const canvasRatio = canvas.width / canvas.height;
+                let drawW, drawH, drawX, drawY;
+                if (imgRatio > canvasRatio) {
+                    drawH = canvas.height;
+                    drawW = canvas.height * imgRatio;
+                    drawX = (canvas.width - drawW) / 2;
+                    drawY = 0;
+                } else {
+                    drawW = canvas.width;
+                    drawH = canvas.width / imgRatio;
+                    drawX = 0;
+                    drawY = (canvas.height - drawH) / 2;
+                }
+                ctx.filter = 'none'; 
+                ctx.drawImage(bgImage, drawX, drawY, drawW, drawH);
+            } else {
+                ctx.fillStyle = '#EAE0D5'; 
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+            }
+
+            if (isCameraOn && video.readyState === video.HAVE_ENOUGH_DATA) {
+                ctx.save();
+                const targetX = canvas.width * (params.x / 100);
+                const targetY = canvas.height * (params.y / 100);
+                const faceSize = canvas.width * (params.scale / 100);
+                const vRatio = video.videoWidth / video.videoHeight;
+                const drawWidth = faceSize * 1.5;
+                const drawHeight = drawWidth / vRatio;
+                const tempCanvas = document.createElement('canvas');
+                tempCanvas.width = drawWidth;
+                tempCanvas.height = drawHeight;
+                const tCtx = tempCanvas.getContext('2d');
+                const cx = drawWidth / 2;
+                const cy = drawHeight / 2;
+                const gradient = tCtx.createRadialGradient(cx, cy, faceSize * 0.25, cx, cy, faceSize * 0.7);
+                gradient.addColorStop(0, 'rgba(255, 255, 255, 1)');
+                gradient.addColorStop(0.6, 'rgba(255, 255, 255, 0.8)');
+                gradient.addColorStop(1, 'rgba(255, 255, 255, 0)');
+                tCtx.fillStyle = gradient;
+                tCtx.fillRect(0, 0, drawWidth, drawHeight);
+                tCtx.globalCompositeOperation = 'source-in';
+                if (selectedCar === '1886') {
+                    tCtx.filter = `grayscale(100%) sepia(30%) contrast(110%) brightness(90%)`;
+                } else {
+                    tCtx.filter = `contrast(110%) brightness(105%) saturate(110%)`;
+                }
+                tCtx.translate(drawWidth, 0);
+                tCtx.scale(-1, 1);
+                tCtx.drawImage(video, 0, 0, drawWidth, drawHeight);
+                ctx.translate(targetX, targetY);
+                ctx.drawImage(tempCanvas, -drawWidth/2, -drawHeight/2, drawWidth, drawHeight);
+                ctx.restore();
+            }
+        }
+
+        function startCaptureCountdown() {
+            document.getElementById('capture-btn').classList.add('hidden');
+            const overlay = document.getElementById('countdown-overlay');
+            const counterText = document.getElementById('countdown-text');
+            overlay.classList.remove('hidden');
+            let count = 5;
+            function playTick() {
+                counterText.innerText = count;
+                counterText.classList.remove('animate-count');
+                void counterText.offsetWidth; 
+                counterText.classList.add('animate-count');
+            }
+            playTick();
+            const timer = setInterval(() => {
+                count--;
+                if (count > 0) {
+                    playTick();
+                } else {
+                    clearInterval(timer);
+                    overlay.classList.add('hidden');
+                    const flash = document.getElementById('flash-overlay');
+                    flash.classList.remove('hidden');
+                    flash.classList.remove('opacity-0');
+                    flash.classList.add('opacity-100');
+                    setTimeout(() => {
+                        flash.classList.remove('opacity-100');
+                        flash.classList.add('opacity-0');
+                        setTimeout(() => {
+                            flash.classList.add('hidden');
+                            if (animationId) cancelAnimationFrame(animationId);
+                            const capturedImage = canvas.toDataURL('image/jpeg', 0.9);
+                            document.getElementById('review-img').src = capturedImage;
+                            goToStep(5);
+                        }, 150); 
+                    }, 100); 
+                }
+            }, 1000);
+        }
+
+        function retakePhoto() {
+            document.getElementById('capture-btn').classList.remove('hidden');
+            startDrawingLoop(); 
+            goToStep(4);
+        }
+
+        function confirmCapture() {
+            mockGenerateAIImage();
+        }
+
+        function mockGenerateAIImage() {
+            goToStep(6);
+            setTimeout(() => {
+                const offCanvas = document.createElement('canvas');
+                offCanvas.width = canvas.width;
+                offCanvas.height = canvas.height;
+                const offCtx = offCanvas.getContext('2d');
+                offCtx.drawImage(canvas, 0, 0);
+                offCtx.globalCompositeOperation = 'color';
+                if (selectedCar === '1886') {
+                    offCtx.fillStyle = 'rgba(194, 147, 99, 0.3)'; 
+                } else {
+                    offCtx.fillStyle = 'rgba(100, 90, 80, 0.15)'; 
+                }
+                offCtx.fillRect(0, 0, offCanvas.width, offCanvas.height);
+                offCtx.globalCompositeOperation = 'source-over';
+                finalAIImageUrl = offCanvas.toDataURL('image/jpeg', 0.9);
+                document.getElementById('ai-result-img').src = finalAIImageUrl;
+                if (isCameraOn) {
+                    const stream = video.srcObject;
+                    if (stream) stream.getTracks().forEach(track => track.stop());
+                    isCameraOn = false;
+                }
+                goToStep(7);
+            }, 3000);
+        }
+
+        init();
+    </script>
+</body>
+</html>
