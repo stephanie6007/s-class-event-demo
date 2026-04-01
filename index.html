@@ -93,7 +93,7 @@
         <p id="step-indicator" class="text-xs font-sans tracking-[0.2em] uppercase text-warm-muted">Welcome</p>
     </header>
 
-    <!-- ================= STEP 1: WELCOME (Updated Content) ================= -->
+    <!-- ================= STEP 1: WELCOME ================= -->
     <div id="step-1" class="step active flex-col items-center justify-center h-full w-full relative bg-warm-bg">
         <div class="absolute inset-0 bg-gradient-to-b from-warm-bg via-[#F4EFE6] to-[#EAE0D5] opacity-50"></div>
         <div class="relative z-10 flex flex-col items-center text-center px-6 max-w-4xl">
@@ -109,26 +109,36 @@
         </div>
     </div>
 
-    <!-- ================= STEP 2: VEHICLE SELECTION ================= -->
+    <!-- ================= STEP 2: VEHICLE SELECTION (Added 3rd Option) ================= -->
     <div id="step-2" class="step flex-col items-center justify-center h-full w-full px-12 bg-warm-bg relative z-10">
         <div class="w-full text-center mb-12">
             <p class="text-xs tracking-[0.2em] uppercase text-warm-muted mb-2">Step 01</p>
-            <h2 class="text-4xl font-serif text-warm-text">Select Your Era</h2>
+            <h2 class="text-4xl font-serif text-warm-text">Select Your Style</h2>
         </div>
 
-        <div class="flex flex-row justify-center gap-8 w-full max-w-5xl">
-            <div onclick="selectCar('sclass', this)" class="kiosk-card car-card cursor-pointer flex-1 flex flex-col items-center justify-center gap-6 rounded-3xl h-80 px-6">
-                <i class="fas fa-car-side text-6xl icon-color text-warm-muted"></i>
+        <div class="flex flex-row justify-center gap-6 w-full max-w-6xl">
+            <!-- The New S-Class -->
+            <div onclick="selectCar('sclass', this)" class="kiosk-card car-card cursor-pointer flex-1 flex flex-col items-center justify-center gap-6 rounded-3xl h-80 px-4">
+                <i class="fas fa-car-side text-5xl icon-color text-warm-muted"></i>
                 <div class="text-center">
-                    <h3 class="text-2xl font-serif mb-2 text-warm-text">The New S-Class</h3>
-                    <p class="text-xs font-sans tracking-widest uppercase text-warm-muted">Modern Luxury</p>
+                    <h3 class="text-xl font-serif mb-2 text-warm-text">The New S-Class</h3>
+                    <p class="text-[10px] font-sans tracking-widest uppercase text-warm-muted">Modern Luxury</p>
                 </div>
             </div>
-            <div onclick="selectCar('1886', this)" class="kiosk-card car-card cursor-pointer flex-1 flex flex-col items-center justify-center gap-6 rounded-3xl h-80 px-6 text-center">
-                <i class="fas fa-history text-6xl icon-color text-warm-muted"></i>
+            <!-- The 1886 Benz Patent-Motorwagen -->
+            <div onclick="selectCar('1886', this)" class="kiosk-card car-card cursor-pointer flex-1 flex flex-col items-center justify-center gap-6 rounded-3xl h-80 px-4 text-center">
+                <i class="fas fa-history text-5xl icon-color text-warm-muted"></i>
                 <div class="text-center">
-                    <h3 class="text-2xl font-serif mb-2 text-warm-text leading-tight">The 1886 Benz<br>Patent-Motorwagen</h3>
-                    <p class="text-xs font-sans tracking-widest uppercase text-warm-muted">Classic Heritage</p>
+                    <h3 class="text-xl font-serif mb-2 text-warm-text leading-tight">The 1886 Benz<br>Patent-Motorwagen</h3>
+                    <p class="text-[10px] font-sans tracking-widest uppercase text-warm-muted">Classic Heritage</p>
+                </div>
+            </div>
+            <!-- Paint your own portrait -->
+            <div onclick="selectCar('portrait', this)" class="kiosk-card car-card cursor-pointer flex-1 flex flex-col items-center justify-center gap-6 rounded-3xl h-80 px-4 text-center">
+                <i class="fas fa-palette text-5xl icon-color text-warm-muted"></i>
+                <div class="text-center">
+                    <h3 class="text-xl font-serif mb-2 text-warm-text">Paint your own<br>portrait</h3>
+                    <p class="text-[10px] font-sans tracking-widest uppercase text-warm-muted">Pure Artistry</p>
                 </div>
             </div>
         </div>
@@ -220,10 +230,9 @@
         <p class="text-warm-muted text-xs font-sans tracking-[0.2em] uppercase text-center px-4">Synthesizing heritage.<br>Please wait.</p>
     </div>
 
-    <!-- ================= STEP 7: RESULT (Updated Layout) ================= -->
-    <div id="step-7" class="step flex-row items-center justify-center h-full w-full px-12 pt-20 pb-10 bg-warm-bg z-20 gap-10">
+    <!-- ================= STEP 7: RESULT ================= -->
+    <div id="step-7" class="step flex-row items-center justify-center h-full w-full px-12 pt-20 pb-10 bg-warm-bg z-20 gap-8">
         
-        <!-- 左側：成品 -->
         <div class="flex-1 h-full flex items-center justify-center">
             <div class="h-full max-h-[75vh] aspect-[3/4] bg-white p-4 pb-12 border border-warm-border shadow-xl relative rounded-sm flex items-center justify-center shrink-0">
                 <img id="ai-result-img" class="w-full h-full object-cover bg-[#EAE0D5]" src="" alt="Generated Experience">
@@ -231,7 +240,6 @@
             </div>
         </div>
 
-        <!-- 右側：資訊區 (English QR code & No Gallery message) -->
         <div class="w-[420px] bg-white px-10 py-12 border border-warm-border shadow-xl rounded-2xl flex flex-col items-center text-center h-full max-h-[75vh] justify-between">
             <div>
                 <h3 class="text-3xl font-serif text-warm-text mb-2">Your Portrait</h3>
@@ -284,7 +292,7 @@
             }, 50);
             currentStep = step;
             const indicator = document.getElementById('step-indicator');
-            const stepNames = ['', 'Welcome', 'Era Select', 'Attire Select', 'Align Face', 'Review', 'Processing', 'Legacy Archive'];
+            const stepNames = ['', 'Welcome', 'Style Select', 'Attire Select', 'Align Face', 'Review', 'Processing', 'Legacy Archive'];
             indicator.innerText = stepNames[step] || '';
         }
 
@@ -307,13 +315,20 @@
             document.querySelectorAll('.car-card').forEach(el => el.classList.remove('selected'));
             element.classList.add('selected');
             isBgLoaded = true; 
+            
             if (type === '1886') {
                 document.getElementById('result-caption').innerText = "The 1886 Benz Patent-Motorwagen";
                 bgImage.src = "https://upload.wikimedia.org/wikipedia/commons/thumb/1/1b/Benz-velo.jpg/1280px-Benz-velo.jpg";
-            } else {
+            } else if (type === 'sclass') {
                 document.getElementById('result-caption').innerText = "The New S-Class";
                 bgImage.src = "https://upload.wikimedia.org/wikipedia/commons/thumb/3/30/Mercedes-Benz_W223_IMG_6663.jpg/1280px-Mercedes-Benz_W223_IMG_6663.jpg";
+            } else {
+                // Portrait Option
+                document.getElementById('result-caption').innerText = "Your Timeless Portrait";
+                // 使用藝術質感的畫布底圖
+                bgImage.src = "https://images.unsplash.com/photo-1541701494587-cb58502866ab?q=80&w=1280&auto=format&fit=crop";
             }
+            
             bgImage.onload = () => { isBgLoaded = true; };
             setTimeout(() => { goToStep(3); }, 300);
         }
@@ -405,11 +420,15 @@
                 tCtx.fillStyle = gradient;
                 tCtx.fillRect(0, 0, drawWidth, drawHeight);
                 tCtx.globalCompositeOperation = 'source-in';
+                
                 if (selectedCar === '1886') {
                     tCtx.filter = `grayscale(100%) sepia(30%) contrast(110%) brightness(90%)`;
+                } else if (selectedCar === 'portrait') {
+                    tCtx.filter = `contrast(120%) brightness(95%) saturate(80%)`;
                 } else {
                     tCtx.filter = `contrast(110%) brightness(105%) saturate(110%)`;
                 }
+                
                 tCtx.translate(drawWidth, 0);
                 tCtx.scale(-1, 1);
                 tCtx.drawImage(video, 0, 0, drawWidth, drawHeight);
@@ -479,6 +498,8 @@
                 offCtx.globalCompositeOperation = 'color';
                 if (selectedCar === '1886') {
                     offCtx.fillStyle = 'rgba(194, 147, 99, 0.3)'; 
+                } else if (selectedCar === 'portrait') {
+                    offCtx.fillStyle = 'rgba(130, 100, 80, 0.2)'; 
                 } else {
                     offCtx.fillStyle = 'rgba(100, 90, 80, 0.15)'; 
                 }
